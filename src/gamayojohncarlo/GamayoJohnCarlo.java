@@ -16,6 +16,7 @@ public class GamayoJohnCarlo {
     static String[] passwords = new String[100];
     static String[] userTypes = new String[100];
     static int userCount = 0;
+    
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -65,29 +66,65 @@ public class GamayoJohnCarlo {
                 break;
             case 3:
                 login("admin", scanner);
+                
                 break;
             default:
                 System.out.println("Invalid option. Please try again.");
         }
     }
 
-    public static void login(String userType, Scanner scanner) {
-        System.out.print("Enter your username: ");
-        String username = scanner.nextLine();
-        System.out.print("Enter your password: ");
-        String password = scanner.nextLine();
-        
-        for (int i = 0; i < userCount; i++) {
-            if (usernames[i].equals(username) && passwords[i].equals(password) && userTypes[i].equals(userType)) {
-                System.out.println("Login successful as " + userType);
-                return;
-            }
+    public static void displayGuestUsernames() {
+    System.out.println("List of Guest Usernames:");
+    for (int i = 0; i < userCount; i++) {
+        if (userTypes[i].equals("guest")) {
+            System.out.println(usernames[i]);
         }
+    }
+}
+
+public static void displaySubscriberUsernames() {
+    System.out.println("List of Subscriber Usernames:");
+    for (int i = 0; i < userCount; i++) {
+        if (userTypes[i].equals("subscriber")) {
+            System.out.println(usernames[i]);
+        }
+    }
+}
+
+// Modify the login function to allow admin to view guest and subscriber usernames
+
+public static void login(String userType, Scanner scanner) {
+    System.out.print("Enter your username: ");
+    String username = scanner.nextLine();
+    System.out.print("Enter your password: ");
+    String password = scanner.nextLine();
+    
+    if (userType.equals("admin") && username.equals("admin") && password.equals("admin")) {
+        System.out.println("Login successful as " + userType);
+        System.out.println("1. View Guest Usernames");
+        System.out.println("2. View Subscriber Usernames");
+        System.out.print("Choose an option: ");
+        int choice = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
+        
+        switch (choice) {
+            case 1:
+                displayGuestUsernames();
+                break;
+            case 2:
+                displaySubscriberUsernames();
+                break;
+            default:
+                System.out.println("Invalid option.");
+        }
+    } else {
         System.out.println("Login failed. Please check your credentials.");
     }
+}
+
 
     public static void registerUser(Scanner scanner) {
-    System.out.print("Register as:\n1. Guest\n2. Subscriber\n3. Admin\nChoose an option (1/2/3): ");
+    System.out.print("Register as:\n1. Guest\n2. Subscriber\nChoose an option (1/2): ");
     int userTypeChoice = scanner.nextInt();
     scanner.nextLine(); // Consume newline
 
@@ -100,9 +137,6 @@ public class GamayoJohnCarlo {
         case 2:
             userType = "subscriber";
             break;
-        case 3:
-            userType = "admin";
-            break;
         default:
             System.out.println("Invalid user type choice. Registration failed.");
             return;
@@ -112,13 +146,29 @@ public class GamayoJohnCarlo {
     String username = scanner.nextLine();
     System.out.print("Enter your password: ");
     String password = scanner.nextLine();
-
+    
+    
+    // used for checking exisiting account
+    for (int i=0; i<100; i++)
+    {
+    if (username.equals(usernames[i]))
+    {
+        System.out.println("This Username is Existing as " + userTypes[i]);
+        System.out.println("Please try again");
+        break;
+        
+    }
+    else
+        {
     usernames[userCount] = username;
     passwords[userCount] = password;
     userTypes[userCount] = userType;
     userCount++;
-
+    
     System.out.println("Registration successful.");
-}
+    break;
+        }
+    } // for
+} // registerUser
 
 }
