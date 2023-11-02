@@ -118,7 +118,7 @@ public class GamayoJohnCarlo {
     userTypes[userCount] = userType;
     userCount++;
 
-    System.out.println("Registration successful.");
+    System.out.println("Registration successful. tangina ni ron");
 }
 
 }
